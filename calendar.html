@@ -10,15 +10,16 @@
 <body>
   <div class="calendar-container">
     <h1 class="calendar-title">🎂 Birthday Love Calendar 🎂</h1>
-    <p class="calendar-subtitle">เฉลิมฉลองวันเกิดของเธอ 💖</p>
+    <p class="calendar-subtitle">HBD My Love💖</p>
 
-    <!-- ✅ โซนแสดงข้อมูลวันปัจจุบัน -->
-    <div class="calendar-info">
-      <p id="today-date"></p>
-      <p>วันเกิดของเธอ: <strong>30 กรกฎาคม 2568 (วันพุธ)</strong> 🎂</p>
-      <p>เราเฉลิมฉลองเธอมาแล้ว: <span id="days-since-birthday">0</span> วัน 🎉</p>
-      <p id="today-message"></p>
-    </div>
+   ✅ โซนแสดงข้อมูลวันปัจจุบัน
+<div class="calendar-info">
+  <p id="today-date"></p>
+  <p>🎂 <strong>วันเกิดของคนพิเศษ</strong> : 30 กรกฎาคม 2568 (วันพุธ)</p>
+  <!-- <p>🎉 เราได้ฉลองวันเกิดของเธอมาแล้ว: <span id="days-since-birthday">0</span> วัน</p> -->
+  <p id="today-message">วันนี้จะเป็นวันที่ดีอีกวันสำหรับเรานะ!</p>
+</div>
+
 
     <div class="calendar-grid">
   <div class="calendar-day">อา</div>
@@ -63,13 +64,13 @@
   <div class="calendar-date">27</div>
   <div class="calendar-date">28</div>
   <div class="calendar-date">29</div>
-  <div class="calendar-date birthday">30<br>🎂 วันเกิด!</div>
+  <div class="calendar-date birthday">🎂<br></div>
   <div class="calendar-date">31</div>
 </div>
 
     <!-- ✅ กล่องเพิ่มคำอวยพร -->
     <div class="memory-input">
-      <input type="text" id="memory-text" placeholder="เพิ่มคำอวยพรให้เธอ...">
+      <input type="text" id="memory-text" placeholder="เขียนคำอธิฐาน....">
       <button onclick="addMemory()">💖 เพิ่ม</button>
     </div>
     <p id="added-memory" class="hidden"></p>
@@ -125,15 +126,31 @@
     todayMsg.textContent = 'วันนี้... ใกล้วันเกิดของเธอแล้วนะ 💖';
   }
 
-  // ✅ ฟังก์ชันเพิ่มคำอวยพร
-  function addMemory() {
-    const memoryText = document.getElementById('memory-text').value;
-    if (memoryText) {
-      document.getElementById('added-memory').textContent = `คำอวยพรใหม่: ${memoryText} 💕`;
-      document.getElementById('added-memory').classList.remove('hidden');
-      document.getElementById('memory-text').value = '';
-    }
+ // ✅ ฟังก์ชันกรอกคำอธิษฐานแล้วระบบตอบกลับอัตโนมัติ
+function addMemory() {
+  const memoryText = document.getElementById('memory-text').value;
+  const responseEl = document.getElementById('added-memory');
+
+  if (memoryText) {
+    // 📝 ชุดคำตอบสุ่มที่ระบบจะตอบกลับ
+    const responses = [
+      "รักเทอเสมอนะ ขอให้มีคนรักมากมาย",
+      "ไฟต์ติ้งนะเจ้าอ้วง เป็นกำลังใจและอยู่ข้างๆเสมอ",
+      "เค้าอยู่ข้างๆเสมอนะครับ",
+    ];
+
+    // 🎲 สุ่มคำตอบหนึ่งข้อความ
+    const randomReply = responses[Math.floor(Math.random() * responses.length)];
+
+    // 🖊️ แสดงคำตอบ
+    responseEl.textContent = `"${randomReply}"`;
+    responseEl.classList.remove('hidden');
+
+    // เคลียร์กล่องข้อความ
+    document.getElementById('memory-text').value = '';
   }
+}
+
 </script>
 </body>
 </html>
