@@ -13,89 +13,28 @@
 
   <header>
     <h1>Our Sweet Memories 💖</h1>
-    <p class="subtitle">ภาพความทรงจำของเรา 💕</p>
   </header>
 
   <main>
-    <div class="memory-container" id="memoryContainer">
-      <div class="memory-card">
-        <img src="img/memory1.jpg" alt="Memory 1">
-        <p class="card-caption">วันที่เราพบกัน 🌸</p>
+    <div class="gallery">
+      <div class="gallery-item">
+        <img src="memory1.jpg" >
       </div>
-      <div class="memory-card">
-        <img src="img/memory2.jpg" alt="Memory 2">
-        <p class="card-caption">วันแรกที่บอกรัก 💕</p>
+      <div class="gallery-item">
+        <img src="memory2.jpg">
       </div>
-      <div class="memory-card">
-        <img src="img/memory3.jpg" alt="Memory 3">
-        <p class="card-caption">วันทริปแรกของเรา 🏖️</p>
+      <div class="gallery-item">
+        <img src="memory3.jpg" >
+
+      </div>
+      <div class="gallery-item">
+        <img src="memory4.png" >
+
+        <div class="gallery-item">
+        <img src="memory5.png" >
+
       </div>
     </div>
   </main>
-
-  <script>
-    const container = document.getElementById("memoryContainer");
-    let startX, currentCard, isDragging = false;
-
-    function initCards() {
-      const cards = container.querySelectorAll(".memory-card");
-      cards.forEach((card, index) => {
-        card.style.zIndex = cards.length - index;
-        card.style.transform = `scale(${1 - index * 0.05}) translateY(${index * 10}px)`;
-      });
-    }
-
-    initCards();
-
-    container.addEventListener("mousedown", startDrag);
-    container.addEventListener("touchstart", startDrag, { passive: true });
-
-    container.addEventListener("mousemove", drag);
-    container.addEventListener("touchmove", drag, { passive: true });
-
-    container.addEventListener("mouseup", endDrag);
-    container.addEventListener("touchend", endDrag);
-
-    function startDrag(e) {
-      currentCard = container.querySelector(".memory-card:last-child");
-      if (!currentCard) return;
-      isDragging = true;
-      startX = e.type.includes("mouse") ? e.pageX : e.touches[0].clientX;
-      currentCard.style.transition = "none";
-    }
-
-    function drag(e) {
-      if (!isDragging || !currentCard) return;
-      let x = e.type.includes("mouse") ? e.pageX : e.touches[0].clientX;
-      let diffX = x - startX;
-      let rotate = diffX / 15;
-      currentCard.style.transform = `translateX(${diffX}px) rotate(${rotate}deg)`;
-    }
-
-    function endDrag(e) {
-      if (!isDragging || !currentCard) return;
-      isDragging = false;
-      let endX = e.type.includes("mouse") ? e.pageX : e.changedTouches[0].clientX;
-      let diffX = endX - startX;
-
-      if (Math.abs(diffX) > 120) {
-        // ปัดออกจากจอ
-        currentCard.style.transition = "transform 0.5s ease-out";
-        currentCard.style.transform = `translateX(${diffX > 0 ? 1000 : -1000}px) rotate(${diffX > 0 ? 45 : -45}deg)`;
-
-        setTimeout(() => {
-          currentCard.remove();
-          initCards();
-          if (container.querySelectorAll(".memory-card").length === 0) {
-            alert("💕 ความทรงจำหมดแล้ว 💕");
-          }
-        }, 400);
-      } else {
-        // กลับมาตรงกลาง
-        currentCard.style.transition = "transform 0.3s ease";
-        currentCard.style.transform = "translateX(0) rotate(0)";
-      }
-    }
-  </script>
 </body>
 </html>
