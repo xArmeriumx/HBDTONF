@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Love Calendar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Itim&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="calendar.css">
+</head>
+<body>
+  <div class="calendar-container">
+    <h1 class="calendar-title">🎂 Birthday Love Calendar 🎂</h1>
+    <p class="calendar-subtitle">เฉลิมฉลองวันเกิดของเธอ 💖</p>
+
+    <!-- ✅ โซนแสดงข้อมูลวันปัจจุบัน -->
+    <div class="calendar-info">
+      <p id="today-date"></p>
+      <p>วันเกิดของเธอ: <strong>30 กรกฎาคม 2568 (วันพุธ)</strong> 🎂</p>
+      <p>เราเฉลิมฉลองเธอมาแล้ว: <span id="days-since-birthday">0</span> วัน 🎉</p>
+      <p id="today-message"></p>
+    </div>
+
+    <div class="calendar-grid">
+  <div class="calendar-day">อา</div>
+  <div class="calendar-day">จ</div>
+  <div class="calendar-day">อ</div>
+  <div class="calendar-day">พ</div>
+  <div class="calendar-day">พฤ</div>
+  <div class="calendar-day">ศ</div>
+  <div class="calendar-day">ส</div>
+
+  <!-- ✅ ช่องว่างก่อนเริ่มเดือน (เพราะ 1 ก.ค. 2025 เป็นวันอังคาร) -->
+  <div class="calendar-date empty"></div> <!-- อา -->
+  <div class="calendar-date empty"></div> <!-- จ -->
+
+  <!-- ✅ เริ่มวันที่ 1 ก.ค. (อังคาร) -->
+  <div class="calendar-date">1</div>
+  <div class="calendar-date">2</div>
+  <div class="calendar-date">3</div>
+  <div class="calendar-date">4</div>
+  <div class="calendar-date">5</div>
+  <div class="calendar-date">6</div>
+  <div class="calendar-date">7</div>
+  <div class="calendar-date">8</div>
+  <div class="calendar-date">9</div>
+  <div class="calendar-date">10</div>
+  <div class="calendar-date">11</div>
+  <div class="calendar-date">12</div>
+  <div class="calendar-date">13</div>
+  <div class="calendar-date">14</div>
+  <div class="calendar-date">15</div>
+  <div class="calendar-date">16</div>
+  <div class="calendar-date">17</div>
+  <div class="calendar-date">18</div>
+  <div class="calendar-date">19</div>
+  <div class="calendar-date">20</div>
+  <div class="calendar-date">21</div>
+  <div class="calendar-date">22</div>
+  <div class="calendar-date">23</div>
+  <div class="calendar-date">24</div>
+  <div class="calendar-date">25</div>
+  <div class="calendar-date">26</div>
+  <div class="calendar-date">27</div>
+  <div class="calendar-date">28</div>
+  <div class="calendar-date">29</div>
+  <div class="calendar-date birthday">30<br>🎂 วันเกิด!</div>
+  <div class="calendar-date">31</div>
+</div>
+
+    <!-- ✅ กล่องเพิ่มคำอวยพร -->
+    <div class="memory-input">
+      <input type="text" id="memory-text" placeholder="เพิ่มคำอวยพรให้เธอ...">
+      <button onclick="addMemory()">💖 เพิ่ม</button>
+    </div>
+    <p id="added-memory" class="hidden"></p>
+  </div>
+
+<script>
+  // ✅ ฟังก์ชันแปลงวันและเดือนเป็นภาษาไทย
+  function getThaiDay(dayIndex) {
+    const days = ["อาทิตย์", "จันทร์", "อังคาร", "พุธ", "พฤหัสบดี", "ศุกร์", "เสาร์"];
+    return days[dayIndex];
+  }
+
+  function getThaiMonth(monthIndex) {
+    const months = ["มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+                    "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"];
+    return months[monthIndex];
+  }
+
+  // ✅ ดึงวันเวลาปัจจุบัน
+  const now = new Date();
+  const thaiDay = getThaiDay(now.getDay());
+  const thaiMonth = getThaiMonth(now.getMonth());
+  const yearTH = now.getFullYear() + 543;
+
+  // ✅ แสดงวันที่ปัจจุบัน
+  document.getElementById('today-date').textContent = 
+    `วันนี้: ${thaiDay}ที่ ${now.getDate()} ${thaiMonth} ${yearTH}, ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')} น.`;
+
+  // ✅ คำนวณจำนวนวันที่ผ่านมาแล้วหลังวันเกิด (30 ก.ค.)
+  const birthday = new Date(now.getFullYear(), 6, 30); // 6 = ก.ค. (เริ่มนับจาก 0)
+  let diffDays = Math.floor((now - birthday) / (1000 * 60 * 60 * 24));
+
+  if (now < birthday) {
+    // ถ้ายังไม่ถึงวันเกิด → แสดงจำนวนวันคงเหลือ
+    const nextBirthday = new Date(now.getFullYear(), 6, 30);
+    if (now.getMonth() > 6 || (now.getMonth() === 6 && now.getDate() > 30)) {
+      nextBirthday.setFullYear(now.getFullYear() + 1);
+    }
+    diffDays = Math.ceil((nextBirthday - now) / (1000 * 60 * 60 * 24));
+    document.getElementById('days-since-birthday').textContent = `${diffDays} วันถึงวันเกิด`;
+  } else {
+    // ถ้าเลยวันเกิดมาแล้ว
+    document.getElementById('days-since-birthday').textContent = `${diffDays} วัน`;
+  }
+
+  // ✅ ข้อความพิเศษวันนี้
+  const todayMsg = document.getElementById('today-message');
+  if (now.getDate() === 30 && now.getMonth() === 6) {
+    todayMsg.textContent = 'วันนี้... วันเกิดของเธอ! 🎂';
+  } else if (diffDays > 0 && now >= birthday) {
+    todayMsg.textContent = `วันนี้... ผ่านวันเกิดมาแล้ว ${diffDays} วัน 💕`;
+  } else {
+    todayMsg.textContent = 'วันนี้... ใกล้วันเกิดของเธอแล้วนะ 💖';
+  }
+
+  // ✅ ฟังก์ชันเพิ่มคำอวยพร
+  function addMemory() {
+    const memoryText = document.getElementById('memory-text').value;
+    if (memoryText) {
+      document.getElementById('added-memory').textContent = `คำอวยพรใหม่: ${memoryText} 💕`;
+      document.getElementById('added-memory').classList.remove('hidden');
+      document.getElementById('memory-text').value = '';
+    }
+  }
+</script>
+</body>
+</html>

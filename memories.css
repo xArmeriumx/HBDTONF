@@ -1,0 +1,104 @@
+body {
+  margin: 0;
+  font-family: 'Itim', cursive;
+  background: linear-gradient(135deg, #ffe6f0, #fff5f8);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* 🔙 ปุ่มกลับ */
+.back-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #fff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  text-decoration: none;
+  color: #ff4d6d;
+  font-weight: bold;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+.back-btn:hover {
+  background: #ffe4ec;
+  transform: scale(1.05);
+}
+
+/* หัวข้อ */
+header {
+  text-align: center;
+  margin-top: 60px;
+  margin-bottom: 30px;
+}
+header h1 {
+  color: #ff4d6d;
+  font-size: 2.2em;
+  margin: 0;
+}
+.subtitle {
+  font-size: 1.1em;
+  color: #666;
+}
+
+/* Container การ์ด */
+.memory-container {
+  position: relative;
+  width: 90%;
+  max-width: 350px;
+  height: 500px;
+  perspective: 1000px;
+  overflow: hidden;
+}
+
+/* การ์ดทีละใบ */
+.memory-card {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  cursor: grab;
+  transition: transform 0.3s ease-out;
+}
+
+/* รูปภาพในการ์ด */
+.memory-card img {
+  width: 100%;
+  height: 80%;
+  object-fit: cover;
+  border-radius: 20px 20px 0 0;
+}
+
+/* คำบรรยายภาพ */
+.card-caption {
+  padding: 10px;
+  font-size: 1em;
+  color: #ff4d6d;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  border-radius: 0 0 20px 20px;
+}
+
+/* Responsive สำหรับมือถือ */
+@media (max-width: 480px) {
+  .memory-container {
+    max-width: 90%;
+    height: 420px;
+  }
+  header h1 {
+    font-size: 1.8em;
+  }
+  .subtitle {
+    font-size: 1em;
+  }
+}

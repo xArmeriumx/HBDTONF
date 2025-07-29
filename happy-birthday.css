@@ -1,0 +1,94 @@
+body {
+  margin: 0;
+  font-family: 'Itim', cursive;
+  background: #f9e8ec;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* ✅ รูปด้านบนเต็มจอ */
+.photo-section {
+  width: 100%;
+  height: 100vh; /* เต็มจอ */
+  overflow: hidden;
+}
+
+.top-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* ครอบเต็มจอแบบ wallpaper */
+  display: block;
+}
+
+/* ✅ กล่องจดหมาย */
+.letter-container {
+  background: #fff;
+  width: 90%;
+  max-width: 600px;
+  padding: 40px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: -50px; /* ดึงขึ้นมาทับนิดๆให้ดูสวย */
+  position: relative;
+  z-index: 10;
+}
+
+.letter-title {
+  font-family: 'Prompt', sans-serif;
+  font-weight: 600;
+  font-size: 2.2em;
+  color: #ff6b87;
+  margin-bottom: 20px;
+  text-shadow: 1px 1px 3px rgba(255, 107, 135, 0.3);
+}
+
+.letter-content {
+  font-size: 1.1em;
+  color: #555;
+  text-align: left;
+}
+
+.letter-content p {
+  margin: 15px 0;
+}
+
+.letter-content p:first-child {
+  margin-top: 0;
+}
+
+.letter-content p:last-child {
+  margin-bottom: 0;
+  font-style: italic;
+  color: #ff6b87;
+}
+
+/* 📱 Responsive */
+@media (max-width: 768px) {
+  .letter-container {
+    padding: 30px;
+    width: 95%;
+  }
+  .letter-title {
+    font-size: 1.8em;
+  }
+  .letter-content {
+    font-size: 1em;
+  }
+}
+
+@media (max-width: 480px) {
+  .letter-container {
+    padding: 20px;
+    width: 90%;
+  }
+  .letter-title {
+    font-size: 1.5em;
+  }
+  .letter-content {
+    font-size: 0.95em;
+  }
+}

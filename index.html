@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎀 Surprise for You 🎀</title>
+  <link href="https://fonts.googleapis.com/css2?family=Itim&family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- 🔒 LOCK SCREEN -->
+<div id="lock-screen">
+  <div class="lock-card">
+    <div class="lock-img">
+      <img src="img/image1.jpg" alt="couple photo">
+    </div>
+    <h1>🔒 ป้อนรหัส 6 หลัก</h1>
+    <p class="subtitle">วันนี้วันอะไร ??</p>
+
+    <div class="pin-display">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+    </div>
+
+    <div class="keypad">
+      <button onclick="enterNumber('1')">1</button>
+      <button onclick="enterNumber('2')">2</button>
+      <button onclick="enterNumber('3')">3</button>
+      <button onclick="enterNumber('4')">4</button>
+      <button onclick="enterNumber('5')">5</button>
+      <button onclick="enterNumber('6')">6</button>
+      <button onclick="enterNumber('7')">7</button>
+      <button onclick="enterNumber('8')">8</button>
+      <button onclick="enterNumber('9')">9</button>
+      <button class="del" onclick="deleteNumber()">⌫</button>
+      <button onclick="enterNumber('0')">0</button>
+      <button class="ok" onclick="submitPin()">✔</button>
+    </div>
+    <p id="error-msg"></p>
+  </div>
+</div>
+
+<!-- 🎯 COUNTDOWN SCREEN -->
+<div id="countdown-screen">
+  <div class="countdown-wrapper">
+    <h2>⏳ กำลังเข้าสู่วันเกิดของหมูววว</h2>
+    <div class="digital-clock" id="countdown-clock">00:00:05</div>
+  </div>
+  <div id="emoji-bounce-area"></div>
+</div>
+
+<!-- 🌸 MENU SCREEN -->
+<div id="menu-screen">
+  <h1>เมนูแห่งความรัก</h1>
+  <p class="subtitle">สุขสันต์วันเกิดนะที่รัก </p>
+
+  <div class="menu-grid">
+    <a href="happy-birthday.html" class="menu-card">
+      <h2>สุขสันต์วันเกิดนะที่รัก</h2>
+      <p>วันที่พิเศษเพื่อเฉลิมฉลองให้เธอ คนพิเศษของหัวใจ </p>
+    </a>
+    <a href="memories.html" class="menu-card">
+      <h2>บันทึกความทรงจำวันเกิด</h2>
+      <p>เก็บทุกโมเมนต์พิเศษของเราไว้ในวันเกิดนี้</p>
+    </a>
+    <a href="puzzle.html" class="menu-card">
+      <h2>ปริศนาความรักวันเกิด</h2>
+      <p>มาต่อชิ้นส่วนความรักของเราทีละชิ้นในวันเกิดนี้</p>
+    </a>
+    <a href="calendar.html" class="menu-card">
+      <h2>ปฏิทินรักวันเกิด</h2>
+      <p>นับทุกวันของความรัก เริ่มจากวันพิเศษของเธอ </p>
+    </a>
+  </div>
+
+  <!-- ปุ่มล้างค่า PIN สำหรับทดสอบ -->
+  <button onclick="resetPin()" style="margin-top:20px; padding:10px; background:red; color:white; border:none; border-radius:8px;">
+    🔄 รีเซ็ต PIN (สำหรับทดสอบ)
+  </button>
+</div>
+
+<!-- 🎵 เพลงที่จะเล่นหลังป้อน PIN ถูก -->
+<audio id="bg-music" src="music/happy.mp3" loop></audio>
+
+<script>
+const correctPin = "123456";
+let enteredPin = "";
+
+// ✅ ถ้าเคยปลดล็อกแล้ว ให้ข้ามไปหน้าเมนูทันที
+window.onload = function () {
+  if (localStorage.getItem("unlocked") === "true") {
+    document.getElementById("lock-screen").style.display = "none";
+    document.getElementById("menu-screen").style.display = "block";
+  }
+};
+
+// ---- PIN ----
+function enterNumber(num) {
+  if (enteredPin.length < 6) {
+    enteredPin += num;
+    updateDots();
+  }
+}
+function deleteNumber() {
+  enteredPin = enteredPin.slice(0, -1);
+  updateDots();
+}
+function updateDots() {
+  document.querySelectorAll(".dot").forEach((dot, i) => {
+    dot.textContent = i < enteredPin.length ? "🐷" : "";
+  });
+}
+function submitPin() {
+  if (enteredPin === correctPin) {
+    // ✅ เก็บค่าใน localStorage ว่าปลดล็อกแล้ว
+    localStorage.setItem("unlocked", "true");
+
+    document.getElementById("lock-screen").style.display = "none";
+    startCountdown();
+
+    // ✅ เล่นเพลงทันทีหลังใส่ PIN ถูก
+    document.getElementById("bg-music").play();
+  } else {
+    document.getElementById("error-msg").innerText = "❌ รหัสผิด ลองใหม่!";
+    enteredPin = "";
+    updateDots();
+  }
+}
+
+// ---- COUNTDOWN ----
+function startCountdown() {
+  document.getElementById("countdown-screen").style.display = "flex";
+  launchBouncingEmojis();
+
+  let sec = 5;
+  const clock = document.getElementById("countdown-clock");
+
+  const timer = setInterval(() => {
+    clock.innerText = `00:00:0${sec}`;
+    sec--;
+
+    if (sec < 0) {
+      clearInterval(timer);
+      document.getElementById("countdown-screen").style.display = "none";
+      document.getElementById("menu-screen").style.display = "block"; 
+    }
+  }, 1000);
+}
+
+// ---- อีโมจิเด้ง ----
+function launchBouncingEmojis() {
+  const area = document.getElementById("emoji-bounce-area");
+  const emojis = ["🎂", "🎉", "❤️", "🎁"];
+
+  const emojiInterval = setInterval(() => {
+    const emoji = document.createElement("div");
+    emoji.className = "emoji-bounce";
+    emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+    emoji.style.left = Math.random() * 90 + "vw";
+    emoji.style.top = Math.random() * 80 + "vh";
+    emoji.style.fontSize = (Math.random() * 30 + 25) + "px";
+    emoji.style.animationDuration = (Math.random() * 1 + 1.5) + "s";
+    area.appendChild(emoji);
+    setTimeout(() => emoji.remove(), 3000);
+  }, 200);
+
+  setTimeout(() => clearInterval(emojiInterval), 5000);
+}
+
+// ---- รีเซ็ต PIN ----
+function resetPin() {
+  localStorage.removeItem("unlocked");
+  alert("ล้างค่า PIN เรียบร้อย! โหลดหน้านี้ใหม่จะต้องกรอกรหัสอีกครั้ง");
+}
+</script>
+
+</body>
+</html>
